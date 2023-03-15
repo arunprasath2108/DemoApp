@@ -15,6 +15,10 @@
 		C868D8F929BD3CCB00D2BCF2 /* MyAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C868D8F829BD3CCB00D2BCF2 /* MyAccountViewController.swift */; };
 		C868D90329BF5E4E00D2BCF2 /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C868D90229BF5E4E00D2BCF2 /* LoginPresenter.swift */; };
 		C868D90529BF5E6000D2BCF2 /* SignUpPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C868D90429BF5E6000D2BCF2 /* SignUpPresenter.swift */; };
+		C868D90729C0502900D2BCF2 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C868D90629C0502900D2BCF2 /* TableViewCell.swift */; };
+		C8E4341D29C0A85F0040617C /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E4341C29C0A85F0040617C /* News.swift */; };
+		C8E4341F29C1C1C50040617C /* DBConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E4341E29C1C1C50040617C /* DBConnector.swift */; };
+		C8E4342129C1D5990040617C /* DBConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E4342029C1D5990040617C /* DBConstant.swift */; };
 		C8FCCFAD29BB748F00B5F6B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FCCFAC29BB748F00B5F6B6 /* AppDelegate.swift */; };
 		C8FCCFAF29BB748F00B5F6B6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FCCFAE29BB748F00B5F6B6 /* SceneDelegate.swift */; };
 		C8FCCFB629BB749100B5F6B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8FCCFB529BB749100B5F6B6 /* Assets.xcassets */; };
@@ -30,6 +34,10 @@
 		C868D8F829BD3CCB00D2BCF2 /* MyAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAccountViewController.swift; sourceTree = "<group>"; };
 		C868D90229BF5E4E00D2BCF2 /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
 		C868D90429BF5E6000D2BCF2 /* SignUpPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpPresenter.swift; sourceTree = "<group>"; };
+		C868D90629C0502900D2BCF2 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		C8E4341C29C0A85F0040617C /* News.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
+		C8E4341E29C1C1C50040617C /* DBConnector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBConnector.swift; sourceTree = "<group>"; };
+		C8E4342029C1D5990040617C /* DBConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBConstant.swift; sourceTree = "<group>"; };
 		C8FCCFA929BB748F00B5F6B6 /* DemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8FCCFAC29BB748F00B5F6B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C8FCCFAE29BB748F00B5F6B6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -53,6 +61,8 @@
 		C868D8FA29BE482C00D2BCF2 /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
+				C8E4341E29C1C1C50040617C /* DBConnector.swift */,
+				C8E4342029C1D5990040617C /* DBConstant.swift */,
 			);
 			path = DataManager;
 			sourceTree = "<group>";
@@ -65,8 +75,10 @@
 				C868D8F229BD385E00D2BCF2 /* HomePageViewController.swift */,
 				C868D8F029BC3F5500D2BCF2 /* SignUpView.swift */,
 				C868D8F429BD3C8D00D2BCF2 /* NewsFeedViewController.swift */,
+				C868D90629C0502900D2BCF2 /* TableViewCell.swift */,
 				C868D8F629BD3CAD00D2BCF2 /* SearchViewController.swift */,
 				C868D8F829BD3CCB00D2BCF2 /* MyAccountViewController.swift */,
+				C8E4341C29C0A85F0040617C /* News.swift */,
 			);
 			path = UILayer;
 			sourceTree = "<group>";
@@ -185,11 +197,15 @@
 				C868D8F729BD3CAD00D2BCF2 /* SearchViewController.swift in Sources */,
 				C868D8F329BD385E00D2BCF2 /* HomePageViewController.swift in Sources */,
 				C868D90329BF5E4E00D2BCF2 /* LoginPresenter.swift in Sources */,
+				C8E4341F29C1C1C50040617C /* DBConnector.swift in Sources */,
 				C8FCCFAD29BB748F00B5F6B6 /* AppDelegate.swift in Sources */,
 				C868D8EF29BC3D6400D2BCF2 /* SignUpViewController.swift in Sources */,
+				C8E4342129C1D5990040617C /* DBConstant.swift in Sources */,
 				C8FCCFAF29BB748F00B5F6B6 /* SceneDelegate.swift in Sources */,
 				C868D8F529BD3C8D00D2BCF2 /* NewsFeedViewController.swift in Sources */,
+				C868D90729C0502900D2BCF2 /* TableViewCell.swift in Sources */,
 				C868D90529BF5E6000D2BCF2 /* SignUpPresenter.swift in Sources */,
+				C8E4341D29C0A85F0040617C /* News.swift in Sources */,
 				C868D8F929BD3CCB00D2BCF2 /* MyAccountViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
