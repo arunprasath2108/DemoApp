@@ -13,5 +13,4 @@ struct News {
     var image: UIImage
     var postedDate: String
     var title: String
-    var content: String
 }

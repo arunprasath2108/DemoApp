@@ -27,12 +27,27 @@ class DBConstant {
     static let SEARCH_TERM = "SearchTerm"
     static let SEARCH_DATE = "SearchDate"
     
+    
     //Query Constants
+    static let CREATE_TABLE_IF_NOT_EXISTS = "Create table if not exists"
     static let SELECT = "Select"
     static let INSERT_INTO = "Insert into"
     static let FROM = "from"
     static let WHERE = "where"
-//    static let
+    static let NOT_NULL = "Not null"
+    static let UNIQUE = "Unique"
+    
+    
+    //Query keys
+    static let PRIMARY_KEY = "Primary key"
+    
+    //Data types
+    static let INTEGER = "Integer"
+    static let TEXT = "Text"
+    
+    
+    
+    
     
     
     

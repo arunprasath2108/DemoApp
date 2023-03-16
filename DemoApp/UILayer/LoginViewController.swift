@@ -177,7 +177,7 @@ class LoginViewController: UIViewController {
         
         if isUserPresent == true {
             let homePage = HomePageViewController()
-//            homePage.modalPresentationStyle = .fullScreen
+            homePage.modalPresentationStyle = .fullScreen
             present(homePage, animated: true)
         }
         else {
