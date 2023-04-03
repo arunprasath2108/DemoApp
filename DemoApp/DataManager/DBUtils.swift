@@ -26,7 +26,6 @@ class DBUtils {
             print("Can't create UserInfo table")
         }
     }
-    
-    
+
     
 }

@@ -22,6 +22,10 @@ class HomePageViewController: UITabBarController {
         tabBar.backgroundColor = .systemBackground
         tabBar.tintColor = .systemRed
         
+        UserDefaults.standard.set(true, forKey: UserDefaults.loginKey)
+        UserDefaults.standard.synchronize()
+
+        
         let vc1 = NewsFeedViewController()
         vc1.view.backgroundColor = .systemGray6
         let vc2 = SearchViewController()

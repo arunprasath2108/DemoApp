@@ -36,6 +36,7 @@ class DBConstant {
     static let WHERE = "where"
     static let NOT_NULL = "Not null"
     static let UNIQUE = "Unique"
+    static let VALUES = "Values"
     
     
     //Query keys

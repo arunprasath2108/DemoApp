@@ -11,7 +11,6 @@ class LoginViewController: UIViewController {
 
     let loginPresenter = LoginPresenter()
     
-    
     private lazy var topImageContainer: UIView = {
         let topImageContainer = UIView()
         topImageContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -83,8 +82,8 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemGray3
-        addSubView()
-        configureUI()
+            addSubView()
+            configureUI()
     }
     
     private func addSubView() {
@@ -101,7 +100,6 @@ class LoginViewController: UIViewController {
         configureHalfContainerView()
         configureUserNameTextField()
         configurePasswordTextField()
-//        configurePasswordButton()
         configureLoginButton()
         configureCreateAccountLabel()
         configureSignUpButton()
@@ -169,13 +167,18 @@ class LoginViewController: UIViewController {
     @objc func didSignUpLabelTapped() {
         let signUpVC = SignUpViewController()
         signUpVC.modalPresentationStyle = .fullScreen
-        present(signUpVC, animated: true)
+        self.present(signUpVC, animated: true)
+//        let homePage = HomePageViewController()
+//        homePage.modalPresentationStyle = .fullScreen
+//        self.present(homePage, animated: true)
     }
     
     @objc func didLoginButtontapped() {
         let isUserPresent = loginPresenter.isUserPresent(username: userNameTextField.text ?? "nil", password: passwordTextField.text ?? "nil")
         
         if isUserPresent == true {
+            UserDefaults.standard.set(true, forKey: UserDefaults.loginKey)
+            UserDefaults.standard.synchronize()
             let homePage = HomePageViewController()
             homePage.modalPresentationStyle = .fullScreen
             present(homePage, animated: true)

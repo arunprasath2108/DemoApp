@@ -9,6 +9,18 @@ import Foundation
 
 class SignUpPresenter {
     
+    let userSignUpUseCase = SignUpUser()
+    var view: SignUpViewController?
+    
+    func signUpUser(username: String, emailID: String, password: String) {
+        
+        SignUpUser().userSignUp(emailID: emailID, userName: username, pass: password) { [weak self]
+            responseMsg in
+            self?.view?.load()
+        } failure: { [weak self] error in
+            self?.view?.failure()
+        }
+    }
     
     func isUserNameValid(userName: String) -> Bool {
         let userNameRegex = "^[a-zA-Z]{3,}$"
@@ -40,6 +52,8 @@ class SignUpPresenter {
         if confirmPassword == newPassword { return true }
         return false
     }
+    
+    
     
     
     

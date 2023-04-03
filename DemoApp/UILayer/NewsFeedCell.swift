@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TableViewCell: UITableViewCell {
+class NewsFeedCell: UITableViewCell {
 
     private lazy var newsImageView: UIImageView = {
         let imageView = UIImageView()

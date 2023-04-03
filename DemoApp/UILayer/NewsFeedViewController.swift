@@ -22,7 +22,7 @@ class NewsFeedViewController: UITableViewController {
 //        title = "abcdhjm nj"
 //        setTableView()
         tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.register(TableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.register(NewsFeedCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.rowHeight = 200
         tableView.separatorStyle = .none
         datas = fetchData()
@@ -38,7 +38,7 @@ extension NewsFeedViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! TableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NewsFeedCell
         let index = datas[indexPath.row]
         cell.setNews(news: index)
         return cell
@@ -95,7 +95,7 @@ extension NewsFeedViewController {
 extension NewsFeedViewController {
     
     func fetchData() -> [News] {
-        let news1 = News(image: UIImage(named: "Shopping")!, postedDate: "08:30 pm . BBC The Times of India The Times of India The Times of India", title: "Spotify Still Intends to Launch Delayed HiFi Lossless Plan, Just Don't Ask When")
+        let news1 = News(image: UIImage(named: "Shopping")!, postedDate: "08:30 pm . BBC", title: "Spotify Still Intends to Launch Delayed HiFi Lossless Plan, Just Don't Ask When")
         
         let news2 = News(image: UIImage(named: "shopping2")!, postedDate: "10:15 am . The Times of India", title: "Online Retailer Firms Ramp Up Delivery Workers' Hiring For Shopping Season")
         

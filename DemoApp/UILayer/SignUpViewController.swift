@@ -91,8 +91,10 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        
         addSubView()
         configureUI()
+        signUpPresenter.view = self
         userNameView.textField.delegate = self
         emailIdView.textField.delegate = self
         newPasswordView.textField.delegate = self
@@ -198,8 +200,8 @@ class SignUpViewController: UIViewController {
         let isCredentialsValid = isCredentialsValid()
 
         if isCredentialsValid == true {
-            let homePage = HomePageViewController()
-            present(homePage, animated: true)
+//            signUpPresenter.signUpUser(username: userNameView.textField.text, emailID: emailIdView.textField.text, password: newPasswordView.textField.text)
+    
         }
     }
     
@@ -272,6 +274,15 @@ extension SignUpViewController: UITextFieldDelegate {
             default:
                 return
         }
+    }
+    
+    func load() {
+        let loginVC = LoginViewController()
+        present(loginVC, animated: true)
+    }
+    
+    func failure() {
+        print("Error")
     }
 }
 
