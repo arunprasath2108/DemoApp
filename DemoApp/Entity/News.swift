@@ -10,7 +10,11 @@ import UIKit
 
 
 struct News {
-    var image: UIImage
+    
+    var image: UIImage?
+    var imageURL: String
     var postedDate: String
+    var source: String
     var title: String
+    var url: String
 }

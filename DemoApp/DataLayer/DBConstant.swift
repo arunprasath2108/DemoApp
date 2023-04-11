@@ -27,16 +27,25 @@ class DBConstant {
     static let SEARCH_TERM = "SearchTerm"
     static let SEARCH_DATE = "SearchDate"
     
+    //NewsFeed Table Constants
+    static let NEWS_FEED_TABLE = "NewsFeed"
+    static let ARTICLE_URL = "ArticleURL"
+    static let ARTICLE_SOURCE = "ArticleSource"
+    static let ARTICLE_TITLE = "ArticleTitle"
+    static let ARTICLE_IMAGE_NAME = "ArticleImageName"
+    static let PUBLISHED_AT = "PublishedAt"
     
     //Query Constants
     static let CREATE_TABLE_IF_NOT_EXISTS = "Create table if not exists"
     static let SELECT = "Select"
     static let INSERT_INTO = "Insert into"
+    static let UPDATE = "Update"
     static let FROM = "from"
     static let WHERE = "where"
     static let NOT_NULL = "Not null"
     static let UNIQUE = "Unique"
     static let VALUES = "Values"
+    static let SET = "Set"
     
     
     //Query keys

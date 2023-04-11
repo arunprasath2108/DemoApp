@@ -17,6 +17,18 @@ class DBConnector {
     
     private var fileURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appending(component: "demoApp.sqlite")
     
+    var errorMsg: String {
+            get {
+                
+                if let error = sqlite3_errmsg(dbPointer) {
+                    let errorMsg = String(cString: error)
+                    return errorMsg
+                } else {
+                    return "No error message recieved"
+                }
+            }
+        }
+    
     func openDatabase() {
         if sqlite3_open(fileURL.path(), &dbPointer) == SQLITE_OK {
             print("Opened Database Successfully \(fileURL.path)")
@@ -26,7 +38,6 @@ class DBConnector {
             print("Can't create Database")
         }
     }
-    
     
     func createTable(tableName: String, column: [String]) -> Bool {
         let columnsStr = column.joined(separator: ", ")
@@ -47,12 +58,23 @@ class DBConnector {
         }
         return false
     }
+    
+    func update(tableName: String, values: (String, String), whereClause: (String, String)?) -> Bool  {
         
+        let updateColumn = values.0
+        let conditionColumn = whereClause?.0
+        let valuesArr = [values.1, (whereClause?.1)!]
+        let setStatement = DBConstant.SET + " " + updateColumn + " = ? "
+        let whereStatement = DBConstant.WHERE + " " + conditionColumn! + " = ?"
+        let updateQuery = DBConstant.UPDATE + " " + tableName + " " + setStatement + whereStatement
         
-    func execute(query: String, values: [Any] = []) -> Bool {
+        return execute(query: updateQuery, values: valuesArr)
+    }
+    
+     func execute(query: String, values: [Any] = []) -> Bool {
         var isQuerysuccess = false
         var statement: OpaquePointer?
-        
+
         // Prepare the statement
         if sqlite3_prepare_v2(dbPointer, query, -1, &statement, nil) == SQLITE_OK {
             
@@ -82,12 +104,15 @@ class DBConnector {
                     break
                 }
             }
-            
+
             // Execute the statement
             if sqlite3_step(statement) == SQLITE_DONE {
                 isQuerysuccess = true
+            } else {
+                print(errorMsg)
             }
         }   else {
+            print(errorMsg)
             isQuerysuccess = false
         }
         
@@ -95,10 +120,6 @@ class DBConnector {
         return isQuerysuccess
     }
         
-    
-    
-    //need to modify the code..!
-    
 //        func select(tableName: String, whereClause: String? = nil, args: [Any]? = nil, selectColumn: String = "*", joinsQuerry: String = "") -> [[String: Any]]? {
 //
 //            var results: [[String: Any]]?
@@ -169,11 +190,11 @@ class DBConnector {
 //            }
 //            return results
 //        }
-//
-//        func closeDatabase() {
-//            if sqlite3_close(dbPointer) != SQLITE_OK {
-//                print("Error closing database")
-//            }
-//        }
+
+        func closeDatabase() {
+            if sqlite3_close(dbPointer) != SQLITE_OK {
+                print("Error closing database")
+            }
+        }
         
 }

@@ -168,24 +168,23 @@ class LoginViewController: UIViewController {
         let signUpVC = SignUpViewController()
         signUpVC.modalPresentationStyle = .fullScreen
         self.present(signUpVC, animated: true)
-//        let homePage = HomePageViewController()
-//        homePage.modalPresentationStyle = .fullScreen
-//        self.present(homePage, animated: true)
     }
     
     @objc func didLoginButtontapped() {
-        let isUserPresent = loginPresenter.isUserPresent(username: userNameTextField.text ?? "nil", password: passwordTextField.text ?? "nil")
+        loginPresenter.isUserPresent(mailID: userNameTextField.text ?? "nil", password: passwordTextField.text ?? "nil") { [weak self] isUserPresent in
+            
+            if isUserPresent == true {
+                UserDefaults.standard.set(true, forKey: UserDefaults.loginKey)
+                UserDefaults.standard.synchronize()
+                let homePage = HomePageViewController()
+                homePage.modalPresentationStyle = .fullScreen
+                self?.present(homePage, animated: true)
+            }
+            else {
+                self?.errorLabel.isHidden = false
+            }
+        }
         
-        if isUserPresent == true {
-            UserDefaults.standard.set(true, forKey: UserDefaults.loginKey)
-            UserDefaults.standard.synchronize()
-            let homePage = HomePageViewController()
-            homePage.modalPresentationStyle = .fullScreen
-            present(homePage, animated: true)
-        }
-        else {
-            errorLabel.isHidden = false
-        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

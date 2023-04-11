@@ -12,9 +12,9 @@ class SignUpPresenter {
     let userSignUpUseCase = SignUpUser()
     var view: SignUpViewController?
     
-    func signUpUser(username: String, emailID: String, password: String) {
+    func signUpUser(newUserData: User) {
         
-        SignUpUser().userSignUp(emailID: emailID, userName: username, pass: password) { [weak self]
+        userSignUpUseCase.userSignUp(newUserData: newUserData) { [weak self]
             responseMsg in
             self?.view?.load()
         } failure: { [weak self] error in

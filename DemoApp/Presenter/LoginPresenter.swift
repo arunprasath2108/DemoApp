@@ -9,14 +9,13 @@ import Foundation
 
 class LoginPresenter {
     
-    func isUserPresent(username: String, password: String) -> Bool {
-        //check username and mail id for username
-        if username == "arun" {
-            if password == "123" {
-                return true
-            }
-        }
+    let loginAsUserUseCase = loginAsUser()
+    var view: LoginViewController?
+    
+    func isUserPresent(mailID: String, password: String, completion: @escaping (Bool) -> Void) {
         
-        return false
+        loginAsUserUseCase.loginAsUser(emailId: mailID, password: password) { responseMsg in
+            completion(responseMsg)
+        } 
     }
 }

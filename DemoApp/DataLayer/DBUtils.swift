@@ -11,6 +11,7 @@ class DBUtils {
     
     func createTables() {
         createUserInfoTable()
+        createNewsFeedTable()
     }
     
     private func createUserInfoTable() {
@@ -24,6 +25,21 @@ class DBUtils {
         
         if DBConnector.shared.createTable(tableName: tableName, column: columns) != true {
             print("Can't create UserInfo table")
+        }
+    }
+    
+    private func createNewsFeedTable() {
+        let tableName = DBConstant.NEWS_FEED_TABLE
+        let columns = [
+            DBConstant.ARTICLE_TITLE + " " + DBConstant.TEXT + " " + DBConstant.NOT_NULL,
+            DBConstant.ARTICLE_SOURCE + " " + DBConstant.TEXT + " " + DBConstant.NOT_NULL,
+            DBConstant.PUBLISHED_AT + " " + DBConstant.TEXT + " " + DBConstant.NOT_NULL,
+            DBConstant.ARTICLE_URL + " " + DBConstant.TEXT + " " + DBConstant.NOT_NULL + " " + DBConstant.UNIQUE,
+            DBConstant.ARTICLE_IMAGE_NAME + " " + DBConstant.TEXT + " " + DBConstant.UNIQUE
+        ]
+        
+        if DBConnector.shared.createTable(tableName: tableName, column: columns) != true {
+            print("Can't create NewsFeed table")
         }
     }
 

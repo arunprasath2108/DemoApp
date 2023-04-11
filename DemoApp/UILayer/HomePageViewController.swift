@@ -27,6 +27,7 @@ class HomePageViewController: UITabBarController {
 
         
         let vc1 = NewsFeedViewController()
+        let navVC1 = UINavigationController(rootViewController: vc1)
         vc1.view.backgroundColor = .systemGray6
         let vc2 = SearchViewController()
         vc2.view.backgroundColor = .systemGray6
@@ -41,7 +42,7 @@ class HomePageViewController: UITabBarController {
         vc2.tabBarItem = item2
         vc3.tabBarItem = item3
         
-        setViewControllers([vc1, vc2, vc3], animated: false)
+        setViewControllers([navVC1, vc2, vc3], animated: false)
         
     }
 

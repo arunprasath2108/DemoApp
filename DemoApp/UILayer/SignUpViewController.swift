@@ -200,8 +200,8 @@ class SignUpViewController: UIViewController {
         let isCredentialsValid = isCredentialsValid()
 
         if isCredentialsValid == true {
-//            signUpPresenter.signUpUser(username: userNameView.textField.text, emailID: emailIdView.textField.text, password: newPasswordView.textField.text)
-    
+            let newUser = User(username: userNameView.textField.text!, emailID: emailIdView.textField.text!, password: newPasswordView.textField.text!)
+            signUpPresenter.signUpUser(newUserData: newUser)
         }
     }
     
@@ -277,10 +277,11 @@ extension SignUpViewController: UITextFieldDelegate {
     }
     
     func load() {
-        let loginVC = LoginViewController()
-        present(loginVC, animated: true)
+        print("loaded")
+//        let loginVC = LoginViewController()
+//        present(loginVC, animated: true)
     }
-    
+
     func failure() {
         print("Error")
     }

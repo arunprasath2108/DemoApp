@@ -11,6 +11,6 @@ struct NewsFeed: Codable {
     
     var status: String?
     var totalResults: Int = 0
-    var articles: [Article]?
+    var articles: [Article]
     
 }

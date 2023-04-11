@@ -11,14 +11,12 @@ class SignUpUser {
 
     let dataBase = UserInfoDBController()
     
-    func userSignUp(emailID: String,userName: String, pass: String, success: @escaping(String) -> Void, failure: @escaping(String) -> Void) {
+    func userSignUp(newUserData: User, success: @escaping(String) -> Void, failure: @escaping(String) -> Void) {
         
         DispatchQueue.global().async {
-            self.dataBase.addUser(username: userName, emailID: emailID, password: pass) {
+            self.dataBase.addUser(newUser: newUserData) {
                 responseMsg in
-                
                 success(responseMsg)
-                
             } failure: { error in
                 failure(error)
             }

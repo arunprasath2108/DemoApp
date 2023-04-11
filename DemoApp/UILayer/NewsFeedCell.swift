@@ -55,40 +55,46 @@ class NewsFeedCell: UITableViewCell {
     }
     
     private func addSubView() {
-        addSubview(newsImageView)
-        addSubview(postedDateLabel)
-        addSubview(titleView)
-        addSubview(optionButton)
+        contentView.addSubview(newsImageView)
+        contentView.addSubview(titleView)
+        contentView.addSubview(postedDateLabel)
+        contentView.addSubview(optionButton)
     }
     
     private func configureUI() {
+//        configureImageView()
+//        configureDateLabel()
+//        configureTitleView()
+//        configureMoreOptionsButton()
         configureImageView()
-        configureDateLabel()
         configureTitleView()
         configureMoreOptionsButton()
+        configureDateLabel()
     }
     
     func setNews(news: News) {
-        newsImageView.image = news.image
-        postedDateLabel.text = news.postedDate
+        postedDateLabel.text = news.postedDate + "  .  " + news.source
         titleView.text = news.title
     }
     
     private func configureImageView() {
         NSLayoutConstraint.activate([
-            newsImageView.leadingAnchor.constraint(equalToSystemSpacingAfter: contentView.leadingAnchor, multiplier: 1.5),
-            newsImageView.topAnchor.constraint(equalToSystemSpacingBelow: contentView.topAnchor, multiplier: 1.5),
-            newsImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -50),
-            newsImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.35)
-           
+        
+            newsImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
+            newsImageView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            newsImageView.heightAnchor.constraint(equalToConstant: 120),
+            newsImageView.widthAnchor.constraint(equalToConstant: 120)
         ])
+        
     }
     
     private func configureDateLabel() {
         NSLayoutConstraint.activate([
             postedDateLabel.topAnchor.constraint(equalTo: newsImageView.bottomAnchor, constant: 10),
-            postedDateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
-            postedDateLabel.leadingAnchor.constraint(equalTo: newsImageView.leadingAnchor)
+            postedDateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15),
+            postedDateLabel.heightAnchor.constraint(equalToConstant: 15),
+            postedDateLabel.leadingAnchor.constraint(equalTo: newsImageView.leadingAnchor, constant: 10),
+            postedDateLabel.trailingAnchor.constraint(equalTo: newsImageView.trailingAnchor, constant: 100)
         ])
     }
     
@@ -96,7 +102,7 @@ class NewsFeedCell: UITableViewCell {
         NSLayoutConstraint.activate([
             titleView.leadingAnchor.constraint(equalTo: newsImageView.trailingAnchor, constant: 15),
             titleView.topAnchor.constraint(equalTo: newsImageView.topAnchor, constant: 10),
-            titleView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
+            titleView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
         ])
     }
     
@@ -105,6 +111,11 @@ class NewsFeedCell: UITableViewCell {
             optionButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
             optionButton.trailingAnchor.constraint(equalTo: titleView.trailingAnchor)
         ])
+    }
+    
+    func setImage(image: UIImage) {
+        
+        self.newsImageView.image = image
     }
 
 }
