@@ -58,18 +58,7 @@ class DBConnector {
         }
         return false
     }
-    
-    func update(tableName: String, values: (String, String), whereClause: (String, String)?) -> Bool  {
-        
-        let updateColumn = values.0
-        let conditionColumn = whereClause?.0
-        let valuesArr = [values.1, (whereClause?.1)!]
-        let setStatement = DBConstant.SET + " " + updateColumn + " = ? "
-        let whereStatement = DBConstant.WHERE + " " + conditionColumn! + " = ?"
-        let updateQuery = DBConstant.UPDATE + " " + tableName + " " + setStatement + whereStatement
-        
-        return execute(query: updateQuery, values: valuesArr)
-    }
+
     
      func execute(query: String, values: [Any] = []) -> Bool {
         var isQuerysuccess = false
@@ -111,7 +100,7 @@ class DBConnector {
             } else {
                 print(errorMsg)
             }
-        }   else {
+        }  else {
             print(errorMsg)
             isQuerysuccess = false
         }
@@ -120,81 +109,160 @@ class DBConnector {
         return isQuerysuccess
     }
         
-//        func select(tableName: String, whereClause: String? = nil, args: [Any]? = nil, selectColumn: String = "*", joinsQuerry: String = "") -> [[String: Any]]? {
-//
-//            var results: [[String: Any]]?
-//            let query = "SELECT \(selectColumn) FROM \(tableName) \(joinsQuerry) \(whereClause != nil ? "WHERE \(whereClause!)" : "")"
-//            var prepare: OpaquePointer?
-//
-//            if sqlite3_prepare_v2(dbPointer, query, -1, &prepare, nil) == SQLITE_OK {
-//                if let args = args {
-//                    // Bind the parameters to the statement
-//                    for index in 0..<args.count {
-//                        if let value = args[index] as? String {
-//                            sqlite3_bind_text(prepare, Int32(index + 1), (value as NSString).utf8String, -1, nil)
-//                        } else if let value = args[index] as? Int {
-//                            sqlite3_bind_int(prepare, Int32(index + 1), Int32(value))
-//                        } else if let value = args[index] as? Double {
-//                            sqlite3_bind_double(prepare, Int32(index + 1), value)
-//                        } else if args[index] is NSNull {
-//                            sqlite3_bind_null(prepare, Int32(index + 1))
-//                        } else {
-//                            // Unsupported type
-//                            sqlite3_finalize(prepare)
-//                            return nil
-//                        }
-//                    }
-//                }
-//
-//                var rows = [[String: Any]]()
-//
-//                while sqlite3_step(prepare) == SQLITE_ROW {
-//                    var row = [String: Any]()
-//
-//                    for index in 0..<sqlite3_column_count(prepare) {
-//                        let name = String(cString: sqlite3_column_name(prepare, index))
-//                        let type = sqlite3_column_type(prepare, index)
-//                        let value: Any?
-//
-//                        switch type {
-//
-//                        case SQLITE_INTEGER:
-//                            value = Int(sqlite3_column_int(prepare, index))
-//
-//                        case SQLITE_FLOAT:
-//                            value = Double(sqlite3_column_double(prepare, index))
-//
-//                        case SQLITE_TEXT:
-//                            let cString = sqlite3_column_text(prepare, index)
-//                            value = String(cString: cString!)
-//
-//                        case SQLITE_BLOB:
-//                            let data = sqlite3_column_blob(prepare, index)
-//                            let size = Int(sqlite3_column_bytes(prepare, index))
-//                            value = Data(bytes: data!, count: size)
-//
-//                        case SQLITE_NULL:
-//                            value = nil
-//
-//                        default:
-//                            // Unsupported type
-//                            sqlite3_finalize(prepare)
-//                            return nil
-//                        }
-//                        row[name] = value
-//                    }
-//                    rows.append(row)
-//                }
-//                if rows.isEmpty { return nil }
-//                results = rows
-//            }
-//            return results
-//        }
+        func select(tableName: String, whereClause: String? = nil, args: [Any]? = nil, selectColumn: String = "*", joinsQuerry: String = "") -> [[String: Any]]? {
+
+            var results: [[String: Any]]?
+            let query = "SELECT \(selectColumn) FROM \(tableName) \(joinsQuerry) \(whereClause != nil ? "WHERE \(whereClause!)" : "")"
+            var prepare: OpaquePointer?
+
+            if sqlite3_prepare_v2(dbPointer, query, -1, &prepare, nil) == SQLITE_OK {
+                if let args = args {
+                    // Bind the parameters to the statement
+                    for index in 0..<args.count {
+                        if let value = args[index] as? String {
+                            sqlite3_bind_text(prepare, Int32(index + 1), (value as NSString).utf8String, -1, nil)
+                        } else if let value = args[index] as? Int {
+                            sqlite3_bind_int(prepare, Int32(index + 1), Int32(value))
+                        } else if let value = args[index] as? Double {
+                            sqlite3_bind_double(prepare, Int32(index + 1), value)
+                        } else if args[index] is NSNull {
+                            sqlite3_bind_null(prepare, Int32(index + 1))
+                        } else {
+                            // Unsupported type
+                            sqlite3_finalize(prepare)
+                            return nil
+                        }
+                    }
+                }
+
+                var rows = [[String: Any]]()
+
+                while sqlite3_step(prepare) == SQLITE_ROW {
+                    var row = [String: Any]()
+
+                    for index in 0..<sqlite3_column_count(prepare) {
+                        let name = String(cString: sqlite3_column_name(prepare, index))
+                        let type = sqlite3_column_type(prepare, index)
+                        let value: Any?
+
+                        switch type {
+
+                        case SQLITE_INTEGER:
+                            value = Int(sqlite3_column_int(prepare, index))
+
+                        case SQLITE_FLOAT:
+                            value = Double(sqlite3_column_double(prepare, index))
+
+                        case SQLITE_TEXT:
+                            let cString = sqlite3_column_text(prepare, index)
+                            value = String(cString: cString!)
+
+                        case SQLITE_BLOB:
+                            let data = sqlite3_column_blob(prepare, index)
+                            let size = Int(sqlite3_column_bytes(prepare, index))
+                            value = Data(bytes: data!, count: size)
+
+                        case SQLITE_NULL:
+                            value = nil
+
+                        default:
+                            // Unsupported type
+                            sqlite3_finalize(prepare)
+                            return nil
+                        }
+                        row[name] = value
+                    }
+                    rows.append(row)
+                }
+                if rows.isEmpty { return nil }
+                results = rows
+            }
+            return results
+        }
 
         func closeDatabase() {
             if sqlite3_close(dbPointer) != SQLITE_OK {
                 print("Error closing database")
             }
         }
+    
+    
+    
+    
+    
+    
+    
+    
+    //        func select(tableName: String, whereClause: String? = nil, args: [Any]? = nil, selectColumn: String = "*", joinsQuerry: String = "") -> [[String: Any]]? {
+    //
+    //            var results: [[String: Any]]?
+    //            let query = "SELECT \(selectColumn) FROM \(tableName) \(joinsQuerry) \(whereClause != nil ? "WHERE \(whereClause!)" : "")"
+    //            var prepare: OpaquePointer?
+    //
+    //            if sqlite3_prepare_v2(dbPointer, query, -1, &prepare, nil) == SQLITE_OK {
+    //                if let args = args {
+    //                    // Bind the parameters to the statement
+    //                    for index in 0..<args.count {
+    //                        if let value = args[index] as? String {
+    //                            sqlite3_bind_text(prepare, Int32(index + 1), (value as NSString).utf8String, -1, nil)
+    //                        } else if let value = args[index] as? Int {
+    //                            sqlite3_bind_int(prepare, Int32(index + 1), Int32(value))
+    //                        } else if let value = args[index] as? Double {
+    //                            sqlite3_bind_double(prepare, Int32(index + 1), value)
+    //                        } else if args[index] is NSNull {
+    //                            sqlite3_bind_null(prepare, Int32(index + 1))
+    //                        } else {
+    //                            // Unsupported type
+    //                            sqlite3_finalize(prepare)
+    //                            return nil
+    //                        }
+    //                    }
+    //                }
+    //
+    //                var rows = [[String: Any]]()
+    //
+    //                while sqlite3_step(prepare) == SQLITE_ROW {
+    //                    var row = [String: Any]()
+    //
+    //                    for index in 0..<sqlite3_column_count(prepare) {
+    //                        let name = String(cString: sqlite3_column_name(prepare, index))
+    //                        let type = sqlite3_column_type(prepare, index)
+    //                        let value: Any?
+    //
+    //                        switch type {
+    //
+    //                        case SQLITE_INTEGER:
+    //                            value = Int(sqlite3_column_int(prepare, index))
+    //
+    //                        case SQLITE_FLOAT:
+    //                            value = Double(sqlite3_column_double(prepare, index))
+    //
+    //                        case SQLITE_TEXT:
+    //                            let cString = sqlite3_column_text(prepare, index)
+    //                            value = String(cString: cString!)
+    //
+    //                        case SQLITE_BLOB:
+    //                            let data = sqlite3_column_blob(prepare, index)
+    //                            let size = Int(sqlite3_column_bytes(prepare, index))
+    //                            value = Data(bytes: data!, count: size)
+    //
+    //                        case SQLITE_NULL:
+    //                            value = nil
+    //
+    //                        default:
+    //                            // Unsupported type
+    //                            sqlite3_finalize(prepare)
+    //                            return nil
+    //                        }
+    //                        row[name] = value
+    //                    }
+    //                    rows.append(row)
+    //                }
+    //                if rows.isEmpty { return nil }
+    //                results = rows
+    //            }
+    //            return results
+    //        }
+
         
 }

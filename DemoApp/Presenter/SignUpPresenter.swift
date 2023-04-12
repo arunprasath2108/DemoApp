@@ -9,7 +9,7 @@ import Foundation
 
 class SignUpPresenter {
     
-    let userSignUpUseCase = SignUpUser()
+    let userSignUpUseCase = SignUpUseCase()
     var view: SignUpViewController?
     
     func signUpUser(newUserData: User) {

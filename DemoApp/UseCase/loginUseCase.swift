@@ -7,7 +7,7 @@
 
 import Foundation
 
-class loginAsUser {
+class loginUseCase {
     
     let database = UserInfoDBController()
     

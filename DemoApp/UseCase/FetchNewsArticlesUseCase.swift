@@ -8,11 +8,10 @@
 import Foundation
 import UIKit
 
-class FetchNewsArticles {
+class FetchNewsArticlesUseCase {
     
     let newsfeedNetworkService = NewsFeedNetworkService()
-    let dataManager = DataManager()
-    let totalNews: [News] = []
+    let dataManager = NewsDataManager()
     
     func fetchNewsArticle(success: @escaping([Article]) -> Void, failure: @escaping (String) -> Void) {
 
@@ -27,8 +26,8 @@ class FetchNewsArticles {
         }
     }
     
-    func getImage(articleURL: String, imageURL: String ,completion: @escaping (UIImage?) -> Void) {
-        dataManager.getImage(articleURL: articleURL, imageURL: imageURL) { image in
+    func getImage(imageURL: String ,completion: @escaping (UIImage?) -> Void) {
+        dataManager.getImage(imageURL: imageURL) { image in
             DispatchQueue.main.async {
                 completion(image)
             }

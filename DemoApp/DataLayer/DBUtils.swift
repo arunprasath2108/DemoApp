@@ -34,8 +34,8 @@ class DBUtils {
             DBConstant.ARTICLE_TITLE + " " + DBConstant.TEXT + " " + DBConstant.NOT_NULL,
             DBConstant.ARTICLE_SOURCE + " " + DBConstant.TEXT + " " + DBConstant.NOT_NULL,
             DBConstant.PUBLISHED_AT + " " + DBConstant.TEXT + " " + DBConstant.NOT_NULL,
-            DBConstant.ARTICLE_URL + " " + DBConstant.TEXT + " " + DBConstant.NOT_NULL + " " + DBConstant.UNIQUE,
-            DBConstant.ARTICLE_IMAGE_NAME + " " + DBConstant.TEXT + " " + DBConstant.UNIQUE
+            DBConstant.ARTICLE_URL + " " + DBConstant.TEXT + " " + DBConstant.PRIMARY_KEY,
+            DBConstant.ARTICLE_IMAGE_URL + " " + DBConstant.TEXT + " " + DBConstant.UNIQUE
         ]
         
         if DBConnector.shared.createTable(tableName: tableName, column: columns) != true {

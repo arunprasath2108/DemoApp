@@ -10,13 +10,13 @@ import UIKit
 
 class NewsFeedNetworkService {
     
-    var parser = Parser()
-    var network = Network()
+    var parser = NewsParser()
+    var network = NetworkHandler()
     
     func getNewsArticle(success: @escaping ([Article]) -> Void, failure: @escaping (String) -> Void) {
         
-        let query = "everything?q=shopping&sortBy=publishedAt&from=2023-04-07&to=2023-04-10&pageSize=10&lang=en"
-        let urlString = Network.newsBaseURL + query + "&apiKey=" + Network.newsAPIKey
+        let query = "everything?q=shopping&sortBy=publishedAt&lang=en"
+        let urlString = NetworkHandler.newsBaseURL + query + "&apiKey=" + NetworkHandler.newsAPIKey
         
         network.performDataTask(urlString: urlString) { data,errorMessage in
             if let data = data {
@@ -51,30 +51,5 @@ class NewsFeedNetworkService {
             }
         }
     }
-    
-    func saveImageToFile(imageURL: String, image: UIImage, imageName: @escaping (String) -> Void) {
-        let fileManager = FileManager.default
-        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-        
-            let fileName = "\(getImageName(from: imageURL)).jpg"
 
-            if let imageData = image.jpegData(compressionQuality: 1.0) {
-                let fileURL = documentsDirectory.appendingPathComponent(fileName)
-
-                do {
-                    try imageData.write(to: fileURL)
-//                    print("Image \(fileName) saved successfully.")
-                    imageName(fileName)
-                } catch {
-                    print("Error saving image \(fileName): \(error.localizedDescription)")
-                }
-            }
-    }
-    
-    private func getImageName(from imageURL: String) -> String {
-        let splitArray = imageURL.split(separator: "/")
-        return String(splitArray.last!)
-    }
-    
-    
 }

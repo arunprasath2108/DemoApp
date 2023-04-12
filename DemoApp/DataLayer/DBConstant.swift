@@ -32,7 +32,7 @@ class DBConstant {
     static let ARTICLE_URL = "ArticleURL"
     static let ARTICLE_SOURCE = "ArticleSource"
     static let ARTICLE_TITLE = "ArticleTitle"
-    static let ARTICLE_IMAGE_NAME = "ArticleImageName"
+    static let ARTICLE_IMAGE_URL = "ArticleImageURL"
     static let PUBLISHED_AT = "PublishedAt"
     
     //Query Constants

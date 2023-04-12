@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SignUpUser {
+class SignUpUseCase {
 
     let dataBase = UserInfoDBController()
     

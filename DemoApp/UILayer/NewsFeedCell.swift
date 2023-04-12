@@ -8,6 +8,8 @@
 import UIKit
 
 class NewsFeedCell: UITableViewCell {
+    
+    var news: Article?
 
     private lazy var newsImageView: UIImageView = {
         let imageView = UIImageView()
@@ -72,9 +74,21 @@ class NewsFeedCell: UITableViewCell {
         configureDateLabel()
     }
     
-    func setNews(news: News) {
-        postedDateLabel.text = news.postedDate + "  .  " + news.source
-        titleView.text = news.title
+    func setNews(article: Article) {
+        self.news = article
+        postedDateLabel.text = article.publishedAt! + "  .  " + (article.source?.name)!
+        titleView.text = article.title
+        
+        NewsFeedPresenter().getImage(imageURL: article.urlToImage!) { [self] image, imageURL in
+            if news?.urlToImage == imageURL {
+                if let image = image {
+                    newsImageView.image = image
+                }
+                else {
+                    newsImageView.image = UIImage(named: "Shopping")!
+                }
+            }
+        }
     }
     
     private func configureImageView() {

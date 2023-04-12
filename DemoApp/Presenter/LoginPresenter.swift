@@ -9,7 +9,7 @@ import Foundation
 
 class LoginPresenter {
     
-    let loginAsUserUseCase = loginAsUser()
+    let loginAsUserUseCase = loginUseCase()
     var view: LoginViewController?
     
     func isUserPresent(mailID: String, password: String, completion: @escaping (Bool) -> Void) {

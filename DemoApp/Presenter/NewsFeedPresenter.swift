@@ -9,158 +9,149 @@ import UIKit
 
 class NewsFeedPresenter {
     
-    let fetchNewsArticles = FetchNewsArticles()
-    var newsArray: [News] = []
+    let fetchNewsArticlesUseCase = FetchNewsArticlesUseCase()
+    var newsArray: [Article] = []
+    let dateFormatter = DateFormatter()
+
     
     
-    func fetchNewsArticle(success: @escaping ([News]) -> Void, failure: @escaping (String) -> Void) {
-        fetchNewsArticles.fetchNewsArticle { listOfArticle in
+    func fetchNewsArticle(success: @escaping ([Article]) -> Void, failure: @escaping (String) -> Void) {
+        
+        fetchNewsArticlesUseCase.fetchNewsArticle() { listOfArticle in
             
             for article in listOfArticle {
-                
-//                print("before parsing \(article.postedDate)")
-//
-////                let timeOrDate = checkDateToPresent(dateString: article.postedDate)
-//                let (date, time): (String, String) = self.parseDateAndTime(dateString: article.postedDate, inputFormat: "yyyy-MM-dd'T'HH:mm:ssZ")
-//
-//                print("after parsing date and time --> \(date)  : \(time)")
-//
-//
-//                let dateToPresent = self.checkDateToPresent(inputDate: article.postedDate, dateString: date, timeString: time)
-//                var finalDate = String()
-//
-//                if dateToPresent == "time" {
-//                    finalDate = time
-//                }
-//                else if dateToPresent == "date" {
-//                    let inputFormatter = DateFormatter()
-//                    inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-//                    if let date = inputFormatter.date(from: article.postedDate) {
-//                        finalDate = self.parseDate(inputDate: date, outputFormat: "MMM d")
-//                    }
-//                }
-//                else if dateToPresent == "yesterday" {
-//                    finalDate = "yesterday"
-//                }
-//                else if dateToPresent == "date" {
-//                    let inputFormatter = DateFormatter()
-//                    inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-//                    if let date = inputFormatter.date(from: article.postedDate) {
-//                        finalDate = self.parseDate(inputDate: date, outputFormat: "MMM d")
-//                    }
-//                }
-//                else {
-//                    finalDate = "1234"
-//                }
-                let news = News(image: nil, imageURL: article.urlToImage!, postedDate: article.publishedAt! , source: (article.source?.name)!, title: article.title!, url: article.url!)
-//                print(news.postedDate)
+                guard let imageURL = article.urlToImage, let newsURL = article.url, let title = article.title, let postedDate = article.publishedAt, let sourceName = article.source else {
+                    continue
+                }
+                let parsedDate = self.parseDateAndTime(postedDate: postedDate)
+                let dateToDisplay = self.getDateFormatToDisplay(from: parsedDate, postedDate: postedDate)
+                let news = Article(source: sourceName, title: title, url: newsURL, urlToImage: imageURL, publishedAt: dateToDisplay)
                 self.newsArray.append(news)
             }
             success(self.newsArray)
-            
-        } failure: { error in
-            failure(error)
+        } failure: { errorMessage in
+            failure(errorMessage)
         }
     }
     
-    func getImage(articleURL: String, imageURL: String ,completion: @escaping (UIImage?) -> Void) {
-        fetchNewsArticles.getImage(articleURL: articleURL, imageURL: imageURL) { image in
-            completion(image)
+    func getImage(imageURL: String ,completion: @escaping (UIImage?, String) -> Void) {
+        fetchNewsArticlesUseCase.getImage(imageURL: imageURL) { image in
+            completion(image, imageURL)
         }
     }
     
-    private func parseDateAndTime(dateString: String, inputFormat: String) -> (String, String) {
-        let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = inputFormat
-        
-        var parsedDate = String()
-        var parsedTime = String()
-        if let date = inputFormatter.date(from: dateString) {
-            parsedDate = parseDate(inputDate: date, outputFormat: "dd-MM-yyyy")
-            print(parsedDate)
-            parsedTime = parseTime(inputDate: date, outputFormat: "h:mm a")
-        }
+    private func parseDateAndTime(postedDate: String) -> (String, String) {
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        let date = dateFormatter.date(from: postedDate)
+        let indianTimeZone = TimeZone(identifier: "GMT+5:30")  // IST time zone
+        dateFormatter.timeZone = indianTimeZone
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        let parsedDate = dateFormatter.string(from: date!)
+        dateFormatter.dateFormat = "hh:mm a"
+        let parsedTime = dateFormatter.string(from: date!)
         
         return (parsedDate, parsedTime)
     }
     
-    
-    private func parseDate(inputDate: Date, outputFormat: String) -> String {
-        var parsedDate = String()
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = outputFormat
-        dateFormatter.timeZone = TimeZone(abbreviation: "GMT")
-        parsedDate = dateFormatter.string(from: inputDate)
-        
-        return parsedDate
-    }
-    
-    private func parseTime(inputDate: Date, outputFormat: String) -> String {
-        var parsedTime = String()
-        
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = outputFormat
-        parsedTime = timeFormatter.string(from: inputDate)
-        
-        return parsedTime
-    }
-    
-    private func getTodaysDate() -> String {
+    func getDateFormatToDisplay(from parsedDateAndTime: (String,String), postedDate: String) -> String {
         let currentDate = Date()
-        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy"
-        dateFormatter.dateStyle = .long
-        dateFormatter.timeStyle = .none
-
-        let dateString = dateFormatter.string(from: currentDate)
-        return dateString
-    }
-    
-    private func getCurrentYear() -> String {
-        let currentYear = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy"
+        let todayDate = dateFormatter.string(from: currentDate)
+        print(" parsed date -> \(parsedDateAndTime.0)  parsedTime -> \(parsedDateAndTime.1)")
         
-        let yearString = dateFormatter.string(from: currentYear)
-        return yearString
-    }
-    
-    private func checkDateToPresent(inputDate: String, dateString: String, timeString: String) -> String {
-    
-        //yesterday, diff. year, else (Apr 04)
-        let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = "dd-MM-yyyy"
-        let date = inputFormatter.date(from: dateString)
-        
-//        print("date-----> \(date)")
-//        print("dateString -----> \(dateString)")
-        if getTodaysDate() == dateString {
-            return "time"
+        //Today's Time
+        if parsedDateAndTime.0 == todayDate {
+            return parsedDateAndTime.1
         }
-        else if isYesterday(date: date!) {
-            print("The given date is yesterday.")
-            return "yesterday"
+        else if parsedDateAndTime.0 == getYesterdayDate() {
+            return "Yesterday"
         }
         else {
-            return "date"
+            return checkForCurrentYear(postedDate: postedDate)
         }
-            
     }
-    
-    func isYesterday(date: Date) -> Bool {
+
+    func getYesterdayDate() -> String? {
         let calendar = Calendar.current
+        let currentDate = Date()
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: currentDate)
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        let yesterdayDate = dateFormatter.string(from: (yesterday)!)
+        return yesterdayDate
+    }
+
+    func checkForCurrentYear(postedDate: String) -> String {
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        let parsedPostedDate = dateFormatter.date(from: postedDate)
+        dateFormatter.dateFormat = "yyyy"
+        let parsedYear = dateFormatter.string(from: parsedPostedDate!)
         
-        if calendar.isDateInYesterday(date) {
-            // The given date is yesterday
-            return true
-        } else {
-            // The given date is not yesterday
-            return false
+        let curentDate = Date()
+        dateFormatter.dateFormat = "yyyy"
+        let currentyear = dateFormatter.string(from: curentDate)
+        
+        if parsedYear == currentyear {
+            dateFormatter.dateFormat = "dd MMM"
+            let date = dateFormatter.string(from: parsedPostedDate!)
+            return date
+        }
+        else {
+            dateFormatter.dateFormat = "MMM yyyy"
+            let date = dateFormatter.string(from: parsedPostedDate!)
+            return date
         }
     }
     
-    
+//    private func getDateFormatToDisplay(from parsedDateAndTime: (String,String), postedDate: String) -> String {
+//        let currentDate = Date()
+//        dateFormatter.dateFormat = "dd-MM-yyyy"
+//        let todayDate = dateFormatter.string(from: currentDate)
+//
+//        //Today's Time
+//        if parsedDateAndTime.0 == todayDate {
+//            return parsedDateAndTime.1
+//        }
+//        else if parsedDateAndTime.0 == getYesterdayDate() {
+//            return "Yesterday"
+//        }
+//        else {
+//            return checkForCurrentYear(postedDate: postedDate)
+//        }
+//    }
+//
+//    private func getYesterdayDate() -> String? {
+//        let calendar = Calendar.current
+//        let currentDate = Date()
+//        let yesterday = calendar.date(byAdding: .day, value: -1, to: currentDate)
+//        dateFormatter.dateFormat = "dd-MM-yyyy"
+//        let yesterdayDate = dateFormatter.string(from: (yesterday)!)
+//        return yesterdayDate
+//    }
+//
+//    private func checkForCurrentYear(postedDate: String) -> String {
+//        dateFormatter.dateFormat = "dd-MM-yyyy"
+//        let postedDateInDateFormat = dateFormatter.date(from: postedDate)
+//        dateFormatter.dateFormat = "yyyy"
+//        guard let postedYear = dateFormatter.date(from: postedDate) else {
+//            return ""
+//        }
+//        let postedYearString = dateFormatter.string(from: postedYear)
+//
+//        let date = Date()
+//        dateFormatter.dateFormat = "yyyy"
+//        let currentYear = dateFormatter.string(from: date)
+//
+//        if postedYearString == currentYear {
+//            dateFormatter.dateFormat = "MMM yyyy"
+//            let dateToPresent = dateFormatter.string(from: postedDateInDateFormat!)
+//            return dateToPresent
+//        }
+//        else {
+//            dateFormatter.dateFormat = "dd-MM-yyyy"
+//            let dateToPresent = dateFormatter.string(from: postedDateInDateFormat!)
+//            return dateToPresent
+//        }
+//    }
     
     //date styles
     //short -> 4/6/23

@@ -9,16 +9,17 @@ import Foundation
 
 class NewsFeedDBController {
     
+    let tableName = DBConstant.NEWS_FEED_TABLE
     
     func addNews(articles: [Article], completion: @escaping (String?) -> Void) {
         
-        let tableName = DBConstant.NEWS_FEED_TABLE
         for article in articles {
             let columns = [
                 DBConstant.ARTICLE_TITLE : article.title,
                 DBConstant.ARTICLE_SOURCE : (article.source?.name),
                 DBConstant.PUBLISHED_AT : article.publishedAt,
                 DBConstant.ARTICLE_URL : article.url,
+                DBConstant.ARTICLE_IMAGE_URL: article.urlToImage
             ]
             
             if !DBConnector.shared.insert(tableName: tableName,
@@ -30,17 +31,16 @@ class NewsFeedDBController {
         }
     }
     
-    func addImage(articleURL: String, imageName: String, completion: @escaping (String?) -> Void) {
-        let tableName = DBConstant.NEWS_FEED_TABLE
-        if !DBConnector.shared.update(tableName: tableName,
-                                      values: (DBConstant.ARTICLE_IMAGE_NAME, imageName),
-                                      whereClause: (DBConstant.ARTICLE_URL, articleURL)) {
-            completion(nil)
+    func getNewsArticles(success: @escaping ([[String: Any]]?) -> Void, failure: @escaping (String) -> Void)  {
+        let news = (DBConnector.shared.select(tableName: tableName))
+        if news == nil {
+            print("Error in getting news articles")
+            failure("Error in getting news articles")
         }
         else {
-            completion("Added Successfully")
+            success(news)
         }
-
+        
     }
     
     

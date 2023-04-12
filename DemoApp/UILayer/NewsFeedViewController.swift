@@ -12,7 +12,7 @@ import UIKit
 class NewsFeedViewController: UITableViewController {
 
     let newsFeedPresenter = NewsFeedPresenter()
-    var datas: [News] = []
+    var newsData: [Article] = []
     private let reuseIdentifier = "NewsFeedCell"
     let loadingIndicator = UIActivityIndicatorView(style: .large)
     
@@ -34,7 +34,7 @@ class NewsFeedViewController: UITableViewController {
     func fetchNewsArticle() {
         showLoadingIndicator()
         newsFeedPresenter.fetchNewsArticle { newsArticle in
-            self.datas = newsArticle
+            self.newsData = newsArticle
             self.hideLoadingIndicator()
             self.tableView.reloadData()
         } failure: { error in
@@ -76,25 +76,23 @@ class NewsFeedViewController: UITableViewController {
 extension NewsFeedViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return datas.count
+        return newsData.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NewsFeedCell
-        let article = datas[indexPath.row]
+        let article = newsData[indexPath.row]
 
-        newsFeedPresenter.getImage(articleURL: article.url, imageURL: article.imageURL) { image in
-            if let image = image {
-                cell.setImage(image: image)
-                cell.setNews(news: article)
-//                cell.layoutIfNeeded()
-            }
+        cell.setNews(article: article)
+
+//        newsFeedPresenter.getImage(imageURL: article.urlToImage!) { image in
+//            if let image = image {
+//                cell.setImage(image: image)
+//            }
 //            else {
 //                cell.setImage(image: UIImage(named: "Shopping")!)
-//                cell.setNews(news: article)
 //            }
-        }
-        
+//        }
         
         return cell
     }
@@ -102,7 +100,7 @@ extension NewsFeedViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let newsVC = NewsViewController(url: datas[indexPath.row].url)
+        let newsVC = NewsViewController(url: newsData[indexPath.row].url!)
         newsVC.modalPresentationStyle = .fullScreen
         newsVC.view.backgroundColor = .systemGray6
         navigationController?.pushViewController(newsVC, animated: true)

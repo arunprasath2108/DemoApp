@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Parser {
+class NewsParser {
 
     
     func parseNewsArticle(data: Data, success: @escaping (NewsFeed) -> Void, failure: @escaping (String) -> Void) {

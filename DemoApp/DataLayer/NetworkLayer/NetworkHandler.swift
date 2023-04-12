@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Network {
+class NetworkHandler {
     
      static let newsAPIKey: String = "d41250fef91d4968ab796085856f902f"
      static let newsBaseURL: String = "https://newsapi.org/v2/"
@@ -23,7 +23,7 @@ class Network {
         
         let urlRequest = URLRequest(url: url)
         
-        let dataTask = Network.shared.dataTask(with: urlRequest) {
+        let dataTask = NetworkHandler.shared.dataTask(with: urlRequest) {
             (data, response, error) in
             if error == nil && data != nil {
                 completion(data, "")
